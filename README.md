@@ -6,7 +6,7 @@
   </a>
 </p>
 
-> App mobile for project Proffy, responsible for connecting students and teachers to schedule classes. <br />
+> React Native mobile app for project Proffy, responsible for connecting students and teachers to schedule classes. <br />
 > Developed on NLW#2 from Rocketseat.
 
 -----------------------------------------------------
@@ -27,7 +27,7 @@ cd proffy-mobile
 yarn start
 ```
 
-> Follow `expo` instructions, by either running a mobile emulator or using the expo app (search for in your app store).
+> Follow `expo` instructions, by either running a mobile emulator or using the expo app (search for it in your app store).
 
 ## Author
 
