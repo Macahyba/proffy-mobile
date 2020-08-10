@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f0f0f7',
+        justifyContent: 'space-evenly'
     },
 
     teacherList: {
@@ -11,7 +12,8 @@ const styles = StyleSheet.create({
     },
 
     searchForm: {
-        marginBottom: 24
+        marginBottom: 24,
+        justifyContent: 'space-between'
     },
 
     label: {
@@ -24,8 +26,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
-    inputBlock: {
-        width: '48%'
+    inputBlockWeek: {
+        width: '68%'
+    },
+
+    inputBlockTime: {
+        width: '28%'
     },
 
     input: {
@@ -33,9 +39,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         borderRadius: 8,
         justifyContent: 'center',
-        paddingHorizontal: 16,
+        paddingHorizontal: 4,
         marginTop: 4,
         marginBottom: 16
+    },
+
+    timeButton: {
+        height: 54,
+        backgroundColor: '#FFF',
+        borderRadius: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 4,
+        marginTop: 4,
+        marginBottom: 16
+    },
+
+    timeButtonText: {
+        fontSize: 16
     },
 
     submitButton: {

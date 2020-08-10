@@ -1,8 +1,10 @@
 import React, { useState, useCallback } from 'react';
-import { View, ScrollView, Text, TextInput } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-community/async-storage';
+import {Picker} from '@react-native-community/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import PageHeader from '../../components/PageHeader';
 import TeacherItem, { Teacher } from '../../components/TeacherItem';
@@ -16,6 +18,7 @@ function TeacherList(){
     const [teachers, setTeachers] = useState([]);
     const [bookmarks, setBookmarks] = useState<number[]>([]);
     const [ isFiltersVisible, setIsFiltersVisible ] = useState(false);
+    const [viewTimePicker, setViewTimePicker] = useState(false);
 
     const [subject, setSubject] = useState('');
     const [week_day, setWeekDay] = useState('');
@@ -58,6 +61,28 @@ function TeacherList(){
         setTeachers(response.data);
     }
 
+    const showTimePicker = () => {
+        setViewTimePicker(true);
+    };
+
+    const handleWeekDay = (value: any) => {
+        setWeekDay(value);
+    }
+
+    const handleSelectTime = (value: any) => {   
+        setViewTimePicker(false);  
+        if (value.nativeEvent.timestamp) {
+            const miliSeconds = new Date(value.nativeEvent.timestamp)
+            setTime(
+                ("0" + miliSeconds.getHours()).slice(-2) + ':' + 
+                ("0" + miliSeconds.getMinutes()).slice(-2)
+                .toString());
+        } else {
+            setTime('')
+        }
+    }
+
+
     return(
         <View style={styles.container} >
             <PageHeader 
@@ -71,34 +96,52 @@ function TeacherList(){
                 { isFiltersVisible && (
                     <View style={styles.searchForm}>
                         <Text style={styles.label}>Matéria</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={subject}
-                            onChangeText={text =>setSubject(text)}
-                            placeholder="Qual a matéria?"
-                            placeholderTextColor="#c1bccc"
-                        />
-
+                        <View style={styles.input}>
+                            <Picker 
+                                selectedValue={subject}
+                                onValueChange={(value) =>setSubject(value.toString())}
+                            >
+                                <Picker.Item label="Selecione..." value="" />
+                                <Picker.Item label="Matemática" value="Matemática" />
+                                <Picker.Item label="Física" value="Física" />
+                                <Picker.Item label="Geografia" value="Geografia" />
+                                <Picker.Item label="Química" value="Química" />
+                                <Picker.Item label="Portugês" value="Portugês" />
+                            </Picker>                          
+                        </View>
                         <View style={styles.inputGroup} >
-                            <View style={styles.inputBlock}>
+                            <View style={styles.inputBlockWeek}>
                                 <Text style={styles.label}>Dia da semana</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    value={week_day}
-                                    onChangeText={text =>setWeekDay(text)}
-                                    placeholder="Qual o dia?"
-                                    placeholderTextColor="#c1bccc"
-                                />
+                                <View style={styles.input}>
+                                    <Picker 
+                                        selectedValue={week_day}
+                                        onValueChange={(value) => handleWeekDay(value)}
+                                    >
+                                        <Picker.Item label="Selecione..." value="" />
+                                        <Picker.Item label="Domingo" value={0} />
+                                        <Picker.Item label="Segunda-Feira" value={1} />
+                                        <Picker.Item label="Terça-Feira" value={2} />
+                                        <Picker.Item label="Quarta-Feira" value={3} />
+                                        <Picker.Item label="Quinta-Feira" value={4} />
+                                        <Picker.Item label="Sexta-Feira" value={5} />
+                                        <Picker.Item label="Sábado" value={6} />
+                                    </Picker>        
+                                </View>                        
                             </View>
-                            <View style={styles.inputBlock}>
+                            <View style={styles.inputBlockTime}>
                                 <Text style={styles.label}>Horário</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    value={time}
-                                    onChangeText={text =>setTime(text)}
-                                    placeholder="Qual horário?"
-                                    placeholderTextColor="#c1bccc"
-                                />
+                                <View>
+                                    <RectButton style={styles.timeButton} onPress={showTimePicker}>
+                                        <Text style={styles.timeButtonText}>{time}</Text>
+                                    </RectButton>
+                                </View>
+                                { viewTimePicker && (<DateTimePicker
+                                    value={new Date(0)}
+                                    mode="time"
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={value => handleSelectTime(value)}
+                                />)}                             
                             </View>
                         </View>
                         <RectButton onPress={handleFiltersSubmit} style={styles.submitButton}>
